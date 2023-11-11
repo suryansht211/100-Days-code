@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maximumWealth(vector<vector<int>>& accounts) {
+        int numCustomers = accounts.size();
+        int numAccounts = accounts[0].size();
+        int maxWealth = 0;
+
+        for (int customer = 0; customer < numCustomers; ++customer) {
+            int currentWealth = 0;
+
+            for (int account = 0; account < numAccounts; ++account) {
+                currentWealth += accounts[customer][account];
+            }
+
+            maxWealth = max(maxWealth, currentWealth);
+        }
+
+        return maxWealth;
+    }
+};
