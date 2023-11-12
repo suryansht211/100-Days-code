@@ -1,0 +1,19 @@
+#include <vector>
+
+class Solution {
+public:
+    std::vector<int> smallerNumbersThanCurrent(const std::vector<int>& nums) {
+        std::vector<int> result;
+        for (int i = 0; i < nums.size(); i++) {
+            int currentNumber = nums[i];
+            int count = 0;
+            for (int j = 0; j < nums.size(); j++) {
+                if (i != j && currentNumber > nums[j]) {
+                    count++;
+                }
+            }
+            result.push_back(count);
+        }
+        return result;
+    }
+};
