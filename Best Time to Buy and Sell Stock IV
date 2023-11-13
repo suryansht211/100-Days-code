@@ -1,0 +1,36 @@
+class Solution {
+    
+    int calculateMaxProfit(int index, int transactions, int allowedTransactions, vector<int>& prices, int size, vector<vector<int>>& memo) {
+        
+        if (index == size || transactions == 2 * allowedTransactions) {
+            return 0;
+        }
+
+       
+        if (memo[index][transactions] != -1) {
+            return memo[index][transactions];
+        }
+
+       
+        if (transactions % 2 == 0) { 
+            memo[index][transactions] = max(-prices[index] + calculateMaxProfit(index + 1, transactions + 1, allowedTransactions, prices, size, memo),
+                                             calculateMaxProfit(index + 1, transactions, allowedTransactions, prices, size, memo));
+        } else {
+            memo[index][transactions] = max(prices[index] + calculateMaxProfit(index + 1, transactions + 1, allowedTransactions, prices, size, memo),
+                                            calculateMaxProfit(index + 1, transactions, allowedTransactions, prices, size, memo));
+        }
+
+        return memo[index][transactions];
+    }
+
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        int n = prices.size();
+
+        
+        vector<vector<int>> memo(n, vector<int>(2 * k, -1));
+
+       
+        return calculateMaxProfit(0, 0, k, prices, n, memo);
+    }
+};
