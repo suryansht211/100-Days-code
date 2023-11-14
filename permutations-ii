@@ -1,0 +1,62 @@
+#include <vector>
+#include <unordered_map>
+#include <set>
+
+class Solution {
+public:
+    void generatePermutations(
+        const std::vector<int>& nums,
+        std::set<std::vector<int>>& uniquePermutations,
+        std::vector<int>& currentPermutation,
+        std::unordered_map<int, bool>& used,
+        int index
+    ) {
+        int n = nums.size();
+
+        
+        if (index >= n) {
+            uniquePermutations.insert(currentPermutation);
+            return;
+        }
+
+       
+        for (int i = 0; i < n; ++i) {
+            if (!used[i]) {
+                
+                used[i] = true;
+
+               
+                currentPermutation.push_back(nums[i]);
+
+                
+                generatePermutations(nums, uniquePermutations, currentPermutation, used, index + 1);
+
+                // Backtrack: remove the last added element and mark it as unused
+                currentPermutation.pop_back();
+                used[i] = false;
+            }
+        }
+    }
+
+    std::vector<std::vector<int>> permuteUnique(const std::vector<int>& nums) {
+        int n = nums.size();
+        
+        std::set<std::vector<int>> uniquePermutations;
+
+        std::vector<int> currentPermutation;
+
+        std::unordered_map<int, bool> used;
+
+        std::vector<std::vector<int>> result;
+
+        
+        generatePermutations(nums, uniquePermutations, currentPermutation, used, 0);
+
+        
+        for (const auto& perm : uniquePermutations) {
+            result.push_back(perm);
+        }
+
+        return result;
+    }
+};
