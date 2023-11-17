@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        int x = 0, y = 0, val = 1, dir = 0;
+        vector<vector<int>> res(n, vector<int>(n, 0));
+        int dx[] = {0, n-1, n-1, 1};
+        int dy[] = {n-1, n-1, 0, 0};
+        int nx[] = {0, 1, 0, -1};
+        int ny[] = {1, 0, -1, 0};
+        int ndx[] = {1, -1, -1, 1};
+        int ndy[] = {-1, -1, 1, 1};
+        
+        while (val <= n * n) {
+            res[x][y] = val++;
+            if (x == dx[dir] && y == dy[dir]) {
+                dx[dir] += ndx[dir];
+                dy[dir] += ndy[dir];
+                dir = (dir + 1) % 4;
+            }
+            x += nx[dir];
+            y += ny[dir];
+        }
+        return res;
+    }
+};
