@@ -1,0 +1,53 @@
+#include <vector>
+#include <stack>
+#include <algorithm>
+
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        // Initialize the result vector
+        vector<vector<int>> ans;
+
+        // Add the new interval to the existing set of intervals
+        intervals.push_back(newInterval);
+
+        // Sort the intervals based on the start time
+        sort(intervals.begin(), intervals.end());
+
+        // Use a stack to merge overlapping intervals
+        stack<pair<int, int>> s;
+
+        // Push the first interval onto the stack
+        s.push({intervals[0][0], intervals[0][1]});
+
+        // Iterate through the sorted intervals
+        for (int i = 1; i < intervals.size(); i++) {
+            int start1 = s.top().first;
+            int end1 = s.top().second;
+            int start2 = intervals[i][0];
+            int end2 = intervals[i][1];
+
+            // Check for non-overlapping intervals
+            if (end1 < start2) {
+                s.push({intervals[i][0], intervals[i][1]});
+            } else {
+                // Merge overlapping intervals
+                s.pop();
+                end1 = max(end1, end2);
+                s.push({start1, end1});
+            }
+        }
+
+        // Transfer merged intervals from stack to the result vector
+        while (!s.empty()) {
+            ans.push_back({s.top().first, s.top().second});
+            s.pop();
+        }
+
+        // Sort the result vector based on start times
+        sort(ans.begin(), ans.end());
+
+        // Return the merged and sorted intervals
+        return ans;
+    }
+};
