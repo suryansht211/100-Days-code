@@ -1,0 +1,30 @@
+class Solution {
+    void generateSubsets(vector<int>& nums, int currentIndex, vector<int>& currentSubset, vector<vector<int>>& result) {
+        if (currentIndex >= nums.size()) {
+            result.push_back(currentSubset);
+            return;
+        }
+
+        currentSubset.push_back(nums[currentIndex]);
+        generateSubsets(nums, currentIndex + 1, currentSubset, result);
+        currentSubset.pop_back();
+
+        while (currentIndex + 1 < nums.size() && nums[currentIndex] == nums[currentIndex + 1]) {
+            currentIndex++;
+        }
+
+        generateSubsets(nums, currentIndex + 1, currentSubset, result);
+    }
+
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> result;
+        vector<int> currentSubset;
+        
+        sort(nums.begin(), nums.end());
+        
+        generateSubsets(nums, 0, currentSubset, result);
+        
+        return result;
+    }
+};
