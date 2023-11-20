@@ -1,0 +1,22 @@
+#include <vector>
+
+class Solution {
+public:
+    int uniquePathsWithObstacles(std::vector<std::vector<int>>& obstacleGrid) {
+        int m = obstacleGrid.size();
+        int n = obstacleGrid[0].size();
+        std::vector<std::vector<int>> memo(m, std::vector<int>(n, -1));
+        return pathNum(m - 1, n - 1, obstacleGrid, memo);
+    }
+
+private:
+    int pathNum(int m, int n, const std::vector<std::vector<int>>& obstacleGrid,
+                std::vector<std::vector<int>>& memo) {
+        if (memo[m][n] != -1) return memo[m][n];
+        if (obstacleGrid[m][n] == 1) return memo[m][n] = 0;
+        if (m == 0 && n == 0) return memo[m][n] = 1;
+        if (m == 0) return memo[m][n] = pathNum(m, n - 1, obstacleGrid, memo);
+        if (n == 0) return memo[m][n] = pathNum(m - 1, n, obstacleGrid, memo);
+        return memo[m][n] = pathNum(m - 1, n, obstacleGrid, memo) + pathNum(m, n - 1, obstacleGrid, memo);
+    }
+};
