@@ -1,0 +1,28 @@
+class Solution {
+private:
+    void generateSubsets(const vector<int>& nums, vector<int>& currentSubset, int currentIndex, vector<vector<int>>& result) {
+        if (currentIndex >= nums.size()) {
+            result.push_back(currentSubset);
+            return;
+        }
+
+        generateSubsets(nums, currentSubset, currentIndex + 1, result);
+
+        int currentElement = nums[currentIndex];
+        currentSubset.push_back(currentElement);
+        generateSubsets(nums, currentSubset, currentIndex + 1, result);
+
+        currentSubset.pop_back();
+    }
+
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> result;
+        vector<int> currentSubset;
+        int currentIndex = 0;
+
+        generateSubsets(nums, currentSubset, currentIndex, result);
+
+        return result;
+    }
+};
