@@ -1,0 +1,97 @@
+#include <iostream>
+#include <unordered_map>
+#include <queue>
+#include <cmath>
+
+class Solution {
+private:
+    struct BitSequence {
+        std::string bits;
+        int operations;
+    };
+
+    std::unordered_map<std::string, int> bitSequenceCache;
+
+private:
+    void generateBitSequences() {
+        std::string initialSequence(1, '1');
+
+        for (int i = 0; i < 31; ++i) {
+            int sequenceSize = initialSequence.size();
+            int requiredOperations = 0, power = 0;
+
+            for (int j = 0; j < sequenceSize; ++j) {
+                requiredOperations += std::pow(2, power);
+                ++power;
+            }
+
+            bitSequenceCache[initialSequence] = requiredOperations;
+            initialSequence.push_back('0');
+        }
+    }
+
+public:
+    int minimumOneBitOperations(int inputValue) {
+        generateBitSequences();
+
+        std::string binaryRepresentation;
+        for (int i = 0; i < 32; ++i) {
+            binaryRepresentation.push_back(((1 << i) & inputValue) ? '1' : '0');
+        }
+
+        while (!binaryRepresentation.empty() && binaryRepresentation.back() == '0')
+            binaryRepresentation.pop_back();
+
+        if (binaryRepresentation.empty())
+            return 0;
+
+        std::reverse(binaryRepresentation.begin(), binaryRepresentation.end());
+
+        if (bitSequenceCache.count(binaryRepresentation))
+            return bitSequenceCache[binaryRepresentation];
+
+        std::unordered_map<std::string, int> distanceMap;
+        std::queue<BitSequence> sequenceQueue;
+
+        sequenceQueue.push({binaryRepresentation, 0});
+        distanceMap[binaryRepresentation] = 0;
+        std::string targetSequence(binaryRepresentation.size(), '0');
+
+        while (!sequenceQueue.empty()) {
+            auto [currentSequence, currentOperations] = sequenceQueue.front();
+            sequenceQueue.pop();
+
+            if (currentSequence == targetSequence)
+                continue;
+
+            int lastOneIndex = -1;
+            for (int i = currentSequence.size() - 1; i >= 0; --i) {
+                if (currentSequence[i] == '1') {
+                    lastOneIndex = i;
+                    break;
+                }
+            }
+
+            int value = bitSequenceCache[currentSequence.substr(lastOneIndex)];
+            currentSequence[lastOneIndex] = '0';
+
+            if (!distanceMap.count(currentSequence) || currentOperations + value < distanceMap[currentSequence]) {
+                distanceMap[currentSequence] = currentOperations + value;
+                sequenceQueue.push({currentSequence, currentOperations + value});
+            }
+
+            currentSequence[lastOneIndex] = '1';
+
+            if (lastOneIndex - 1 >= 0) {
+                currentSequence[lastOneIndex - 1] = (currentSequence[lastOneIndex - 1] == '1') ? '0' : '1';
+
+                if (!distanceMap.count(currentSequence) || currentOperations + 1 < distanceMap[currentSequence]) {
+                    distanceMap[currentSequence] = currentOperations + 1;
+                    sequenceQueue.push({currentSequence, currentOperations + 1});
+                }
+            }
+        }
+
+        return distanceMap[targetSequence];
+    }
+};
