@@ -1,0 +1,36 @@
+#include <vector>
+#include <string>
+#include <unordered_map>
+
+class Solution {
+public:
+    int countCharacters(std::vector<std::string>& words, std::string chars) {
+        std::unordered_map<char, int> charFrequencyMap;
+        int validCharactersCount = 0;
+
+        for (int i = 0; i < chars.length(); i++) {
+            charFrequencyMap[chars[i]]++;
+        }
+
+        for (int i = 0; i < words.size(); i++) {
+            int flag = 0;
+            std::unordered_map<char, int> wordFrequencyMap = charFrequencyMap;
+            std::string currentWord = words[i];
+
+            for (int j = 0; j < currentWord.length(); j++) {
+                if (wordFrequencyMap[currentWord[j]] > 0) {
+                    wordFrequencyMap[currentWord[j]]--;
+                } else {
+                    flag = 1;
+                    break;
+                }
+            }
+
+            if (!flag) {
+                validCharactersCount += currentWord.length();
+            }
+        }
+
+        return validCharactersCount;
+    }
+};
