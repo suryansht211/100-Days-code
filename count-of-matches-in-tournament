@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int numberOfMatches(int teams) {
+        int totalMatches = 0;
+
+        while (teams > 1) {
+            int currentMatches = teams / 2;
+            totalMatches += currentMatches;
+
+            if (teams % 2 == 0) {
+                teams /= 2;
+            } else {
+                teams = teams / 2 + 1;
+            }
+        }
+
+        return totalMatches;
+    }
+};
