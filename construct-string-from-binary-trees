@@ -1,0 +1,13 @@
+class Solution {
+public:
+    string tree2str(TreeNode* root) {
+        if (root == nullptr) return "";
+
+        string left = tree2str(root->left);
+        string right = tree2str(root->right);
+
+        return to_string(root->val) + 
+                (left == "" && right == "" ? "" : "(" + left + ")") + 
+                (right == "" ? "" : "(" + right + ")");
+    }
+};
