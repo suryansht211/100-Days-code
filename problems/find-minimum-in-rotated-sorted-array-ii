@@ -1,0 +1,18 @@
+#include <vector>
+#include <algorithm>
+
+class Solution {
+public:
+    int findMin(std::vector<int>& nums) {
+        int i = 1, n = nums.size();
+        
+        while (i < n && nums[i] >= nums[i - 1]) {
+            i++;
+        }
+        
+        std::reverse(nums.begin(), nums.begin() + i);
+        std::reverse(nums.begin() + i, nums.end());
+        
+        return nums[n - 1];
+    }
+};
