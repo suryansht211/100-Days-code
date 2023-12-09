@@ -1,0 +1,19 @@
+
+class Solution {
+public:
+    void inorderTraverse(TreeNode* root, vector<int> &result) {
+        if (root == nullptr) {
+            return;
+        }
+
+        inorderTraverse(root->left, result);
+        result.push_back(root->val);
+        inorderTraverse(root->right, result);
+    }
+
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> result;
+        inorderTraverse(root, result);
+        return result;
+    }
+};
