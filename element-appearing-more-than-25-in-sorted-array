@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int findSpecialInteger(vector<int>& arr) {
+        int n = arr.size();
+        
+        // Handle the case where the array has only one element
+        if (n == 1) {
+            return arr[0];
+        }
+        
+        // Initialize variables to track the current element and its count
+        int currentElement = arr[0];
+        int count = 1;
+        
+        // Iterate through the array starting from the second element
+        for (int i = 1; i < n; i++) {
+            // Check if the current element is equal to the previous one
+            if (arr[i] == currentElement) {
+                count++;
+                
+                // Check if the count exceeds a quarter of the array size
+                if (count > n / 4) {
+                    return currentElement;
+                }
+            } else {
+                // Update the current element and reset the count
+                currentElement = arr[i];
+                count = 1;
+            }
+        }
+        
+        // If no special integer is found, return 0
+        return 0;
+    }
+};
