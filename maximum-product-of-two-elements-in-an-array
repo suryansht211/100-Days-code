@@ -1,0 +1,11 @@
+#include <vector>
+#include <algorithm>
+
+class Solution {
+public:
+    int maxProduct(std::vector<int>& nums) {
+        std::sort(nums.begin(), nums.end());
+        int size = nums.size();
+        return (nums[size - 1] - 1) * (nums[size - 2] - 1);
+    }
+};
