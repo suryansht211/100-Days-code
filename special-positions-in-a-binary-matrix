@@ -1,0 +1,43 @@
+#include <vector>
+
+class Solution {
+public:
+    int numSpecial(const std::vector<std::vector<int>>& mat) {
+        // Initialize variables to store the answer and matrix dimensions
+        int ans = 0;
+        int n = mat.size();
+        int m = mat[0].size();
+
+        // Iterate through each row of the matrix
+        for (int i = 0; i < n; i++) {
+            int row_count = 0, col_count = 0, col_index;
+
+            // Check each element in the current row
+            for (int j = 0; j < m; j++) {
+                // If the element is 1, update row_count and store the column index
+                if (mat[i][j] == 1) {
+                    row_count++;
+                    col_index = j;
+                }
+            }
+
+            // If there is exactly one '1' in the current row
+            if (row_count == 1) {
+                // Check the corresponding column for '1's
+                for (int j = 0; j < n; j++) {
+                    if (mat[j][col_index] == 1) {
+                        col_count++;
+                    }
+                }
+
+                // If there is exactly one '1' in the corresponding column, increment the answer
+                if (col_count == 1) {
+                    ans++;
+                }
+            }
+        }
+
+        // Return the final answer
+        return ans;
+    }
+};
