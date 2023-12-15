@@ -1,0 +1,24 @@
+#include <vector>
+#include <string>
+
+class Solution {
+public:
+    std::string destCity(std::vector<std::vector<std::string>>& paths) {
+        for (int i = 0; i < paths.size(); ++i) {
+            bool isDestination = true;
+            
+            for (int j = 0; j < paths.size(); ++j) {
+                if (paths[i][1] == paths[j][0]) {
+                    isDestination = false;
+                    break;
+                }
+            }
+
+            if (isDestination) {
+                return paths[i][1];
+            }
+        }
+        
+        return "";
+    }
+};
