@@ -1,0 +1,26 @@
+#include <algorithm>
+#include <string>
+
+class Solution {
+public:
+    bool isAnagram(const std::string& s, const std::string& t) {
+        // Sort the characters in both strings
+        std::string sortedS = s;
+        std::string sortedT = t;
+        std::sort(sortedS.begin(), sortedS.end());
+        std::sort(sortedT.begin(), sortedT.end());
+
+        // Check if the sorted strings are equal in length
+        if (sortedS.length() != sortedT.length())
+            return false;
+
+        // Compare each character in the sorted strings
+        for (int i = 0; i < sortedT.length(); ++i) {
+            if (sortedS[i] != sortedT[i])
+                return false;
+        }
+
+        // If all characters match, the strings are anagrams
+        return true;
+    }
+};
