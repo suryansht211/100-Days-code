@@ -1,0 +1,53 @@
+class FoodRatings {
+    struct Food{
+        string name;
+        string cusine;
+        int rating;
+
+        Food(){
+        }
+
+        Food(const string& _name, int _rating, const string& _cusine){
+            name = _name;
+            rating = _rating;
+            cusine = _cusine;
+        }
+    };
+
+    struct CustomCmp {
+    bool operator()(const Food* lhs, const Food* rhs) const { 
+            if(lhs->rating == rhs->rating)
+                return lhs->name < rhs->name;
+            return lhs->rating > rhs->rating;
+    }
+};
+    unordered_map<string, Food*> m_cuisines; // food Food*
+    unordered_map<string, set<Food*, CustomCmp>> m_chart; // cousine - set(of foods*)
+public:
+    FoodRatings(vector<string>& foods, vector<string>& cuisines, vector<int>& ratings) {
+        for(int i = 0; i != foods.size(); ++i){
+            Food* f = new Food(foods[i], ratings[i], cuisines[i]);
+            m_cuisines[foods[i]] = f;
+            m_chart[cuisines[i]].insert(f);
+        }
+    }
+
+    void changeRating(const string &food, int newRating) {
+        auto f = m_cuisines[food];
+        m_chart[f->cusine].erase(f);
+        f->rating = newRating;
+        m_chart[f->cusine].insert(f);
+
+    }
+
+    string highestRated(const string& cuisine) {
+        return (*m_chart[cuisine].begin())->name;
+    }
+};
+
+/**
+ * Your FoodRatings object will be instantiated and called as such:
+ * FoodRatings* obj = new FoodRatings(foods, cuisines, ratings);
+ * obj->changeRating(food,newRating);
+ * string param_2 = obj->highestRated(cuisine);
+ */
