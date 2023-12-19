@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<int>> imageSmoother(vector<vector<int>>& A) {
+        int rows = A.size(), cols = A[0].size();
+        vector<vector<int>> result(rows, vector<int>(cols));
+
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                int sum = 0, count = 0;
+
+                for (int x = i - 1; x <= i + 1; ++x) {
+                    for (int y = j - 1; y <= j + 1; ++y) {
+                        if (x >= 0 && x < rows && y >= 0 && y < cols) {
+                            sum += A[x][y];
+                            ++count;
+                        }
+                    }
+                }
+
+                result[i][j] = sum / count;
+            }
+        }
+
+        return result;
+    }
+};
