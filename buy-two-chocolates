@@ -1,0 +1,25 @@
+#include <vector>
+#include <climits>
+
+class Solution {
+public:
+    int buyChoco(std::vector<int>& prices, int money) {
+        int secondSmallest = INT_MAX, firstSmallest = prices[0];
+        
+        for (int i = 1; i < prices.size(); ++i) {
+            if (prices[i] <= firstSmallest) {
+                secondSmallest = firstSmallest;
+                firstSmallest = prices[i];
+            } else if (prices[i] < secondSmallest) {
+                secondSmallest = prices[i];
+            }
+        }
+
+        int remainingAmount = money - (firstSmallest + secondSmallest);
+        if (remainingAmount >= 0) {
+            return remainingAmount;
+        }
+        
+        return money;
+    }
+};
