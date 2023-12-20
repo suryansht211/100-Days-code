@@ -1,0 +1,59 @@
+#include <vector>
+#include <climits>
+#include <algorithm>
+
+class Solution {
+public:
+    // Recursive function with memoization to find the minimum swaps
+    int solveMem(int index, std::vector<int> &nums1, std::vector<int> &nums2, bool flag, std::vector<std::vector<int>> &dp) {
+        int n = nums1.size();
+
+        // Base case: reached the end of arrays
+        if (index == n) return 0;
+
+        // Check if the result for the current state is already memoized
+        if (dp[index][flag] != -1) return dp[index][flag];
+
+        // Initialize answer to a large value
+        int ans = INT_MAX;
+        int prev1 = nums1[index - 1];
+        int prev2 = nums2[index - 1];
+
+        // If flag is true, swap prev1 and prev2
+        if (flag) 
+            std::swap(prev1, prev2);
+
+        // No swap
+        if (prev1 < nums1[index] && prev2 < nums2[index]) {
+            ans = solveMem(index + 1, nums1, nums2, 0, dp);
+        }
+
+        // Swap
+        if (prev1 < nums2[index] && prev2 < nums1[index]) {
+            ans = std::min(ans, 1 + solveMem(index + 1, nums1, nums2, 1, dp));
+        }
+
+        // Memoize the result and return
+        return dp[index][flag] = ans;
+    }
+
+    // Function to find the minimum swaps using memoization
+    int minSwap(std::vector<int>& nums1, std::vector<int>& nums2) {
+        int n = nums1.size();
+
+        // Insert dummy values at the beginning of arrays for easier indexing
+        nums1.insert(nums1.begin(), -1);
+        nums2.insert(nums2.begin(), -1);
+
+        // Initialize a flag for the first call to solveMem
+        bool flag = false;
+
+        // Initialize a 2D memoization table with -1 values
+        std::vector<std::vector<int>> dp(n + 1, std::vector<int>(2, -1));
+
+        // Call the recursive function with memoization
+        return solveMem(1, nums1, nums2, flag, dp);
+
+        
+    }
+};
