@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int leftcount(string left){
+        int count{0};
+        for(auto x:left){
+            if(x == '0')
+                count++;
+        }
+        return count;
+    }
+    int rightcount(string right){
+        int count{0};
+        for(auto x:right){
+            if(x == '1')
+                count++;
+        }
+        return count;
+    }
+
+    int maxScore(string s) {
+        int n = s.size();
+        string left,right;
+        int zeroCount{0};
+        int oneCount{0};
+        int maxi = INT_MIN;
+        int sum{0};
+
+        for(int i{0};i<n;i++){
+            left = s.substr(0,i+1);
+            // cout<<left<<" "<<endl;
+            right = s.substr(i+1,n-1);
+            // cout<<right<<" "<<endl;
+            if(left.size()!=0 and right.size()!=0){
+                zeroCount = leftcount(left);
+                cout<<"zerozcount "<<zeroCount<<endl;
+                oneCount = rightcount(right);
+                cout<<"onezcount "<<oneCount<<endl;
+            }
+            sum = zeroCount + oneCount; //every time new sum 
+            maxi = max(maxi,sum);
+            sum=0; //reset
+        }
+        return maxi;
+    }
+};
