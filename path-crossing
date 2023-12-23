@@ -1,0 +1,32 @@
+#include <set>
+#include <utility>
+#include <string>
+
+class Solution {
+public:
+    bool isPathCrossing(std::string path) {
+        std::set<std::pair<int, int>> coordinates;
+        int x = 0, y = 0;
+        coordinates.insert({x, y});
+
+        for (auto direction : path) {
+            if (direction == 'N') {
+                x++;
+            } else if (direction == 'S') {
+                x--;
+            } else if (direction == 'E') {
+                y++;
+            } else {
+                y--;
+            }
+
+            if (coordinates.count({x, y}) > 0) {
+                return true;
+            }
+
+            coordinates.insert({x, y});
+        }
+
+        return false;
+    }
+};
