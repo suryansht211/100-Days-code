@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minOperations(string s) {
+        int n = s.size();
+        int one = 0;
+        char prev1 = '1';
+
+        int zero = 0;
+        char prev0 = '0';
+
+        s[0] == '0' ? one++ : zero++;
+
+        for(int i = 1; i<n; i++){
+            // Assumed the s[0] is 1 and acc. to that
+            if(prev1 == s[i]){
+                one++;
+                prev1 = prev1 == '0' ? '1' : '0';
+            }
+            else{
+                prev1 = s[i];
+            }
+
+            // Assumed the s[0] is 0 and acc. to that
+            if(prev0 == s[i]){
+                zero++;
+                prev0 = prev0 == '0' ? '1' : '0';
+            }
+            else{
+                prev0 = s[i];
+            }
+        }
+
+    // Whhoever assumption leads to minimum operations that is answer
+        return min(one, zero);
+
+    }
+};
