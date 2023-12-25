@@ -1,0 +1,33 @@
+class Solution {
+    int countDecodings(int index, const string& str, vector<int>& memo) {
+        // If the current index reaches the end of the string, return 1 (valid decoding).
+        if (index == str.length()) return 1;
+
+        // If the result for the current index is already computed, return it.
+        if (memo[index] != -1) return memo[index];
+
+        // Initialize variables to count single and double digit decodings.
+        int singleDigit = 0, doubleDigit = 0;
+
+        // Check for valid single digit decoding (should not start with 0).
+        if (str[index] != '0')
+            singleDigit = countDecodings(index + 1, str, memo);
+
+        // Check for valid double digit decoding (in the range of 10 to 26).
+        if (str[index] != '0' && index + 1 < str.length()) {
+            int num = (str[index] - '0') * 10 + (str[index + 1] - '0');
+            if (num >= 10 && num <= 26)
+                doubleDigit = countDecodings(index + 2, str, memo);
+        }
+
+        // Store the result in the memoization table and return the total count.
+        return memo[index] = singleDigit + doubleDigit;
+    }
+
+public:
+    int numDecodings(string s) {
+        int length = s.length();
+        vector<int> memo(length, -1); // Memoization table to store computed results.
+        return countDecodings(0, s, memo);
+    }
+};
