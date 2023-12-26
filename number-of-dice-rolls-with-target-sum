@@ -1,0 +1,30 @@
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+
+    int countRolls(int maxFaces, int remainingDice, int remainingTarget, vector<vector<int>>& memo) {
+        if (remainingTarget == 0 && remainingDice == 0)
+            return 1;
+        
+        if (remainingDice == 0 || remainingTarget <= 0)
+            return 0;
+
+        if (memo[remainingDice][remainingTarget] != -1)
+            return memo[remainingDice][remainingTarget];
+
+        int ways = 0;
+        for (int i = 1; i <= maxFaces; ++i) {
+            ways = (ways + countRolls(maxFaces, remainingDice - 1, remainingTarget - i, memo)) % MOD;
+        }
+
+        return memo[remainingDice][remainingTarget] = ways % MOD;
+    }
+
+    int numRollsToTarget(int numDice, int numFaces, int target) {
+        vector<vector<int>> memo(numDice + 1, vector<int>(target + 1, -1));
+        return countRolls(numFaces, numDice, target, memo);
+    }
+};
