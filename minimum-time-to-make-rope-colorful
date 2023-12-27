@@ -1,0 +1,29 @@
+class Solution {
+public:
+    struct node{
+        char ch;
+        int time;
+    };
+    int minCost(string s, vector<int>& ndtime) {
+        int n=s.size();
+        int ans=0;
+        stack<node>st;
+        for(int i=0;i<n;i++)
+        {
+            if(!st.empty() && st.top().ch==s[i] )
+            {
+                if(st.top().time<ndtime[i])
+                {
+                    ans+=st.top().time;
+                    st.pop();
+                    st.push({s[i],ndtime[i]});
+                }else{
+                    ans+=ndtime[i];
+                }
+            }else{
+                st.push({s[i],ndtime[i]});
+            }
+        }
+        return ans;
+    }
+};
