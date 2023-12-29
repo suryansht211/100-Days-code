@@ -1,0 +1,44 @@
+class Solution {
+public:
+    // 2D array for memoization
+    int t[301][11];
+
+    // Recursive function to find the minimum difficulty
+    int solve(vector<int>& jobDifficulties, int numJobs, int currentIndex, int remainingDays) {
+        // If there's only 1 day left, select the maximum difficulty from the remaining jobs
+        if (remainingDays == 1) {
+            return *max_element(begin(jobDifficulties) + currentIndex, end(jobDifficulties));
+        }
+
+        // Check if the result for the current state is already memoized
+        if (t[currentIndex][remainingDays] != -1)
+            return t[currentIndex][remainingDays];
+
+        int maxDifficulty = INT_MIN;
+        int result = INT_MAX;
+
+        // Try different possibilities of job allocation for the current day
+        for (int i = currentIndex; i <= numJobs - remainingDays; i++) {
+            maxDifficulty = max(maxDifficulty, jobDifficulties[i]);
+            result = min(result, maxDifficulty + solve(jobDifficulties, numJobs, i + 1, remainingDays - 1));
+        }
+
+        // Memoize the result and return
+        return t[currentIndex][remainingDays] = result;
+    }
+
+    // Main function to calculate the minimum difficulty
+    int minDifficulty(vector<int>& jobDifficulties, int numDays) {
+        int numJobs = jobDifficulties.size();
+
+        // If the number of jobs is less than the required days, return -1
+        if (numJobs < numDays)
+            return -1;
+
+        // Initialize memoization table with -1
+        memset(t, -1, sizeof(t));
+
+        // Call the recursive function to find the minimum difficulty
+        return solve(jobDifficulties, numJobs, 0, numDays);
+    }
+};
