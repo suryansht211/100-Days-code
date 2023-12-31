@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxLengthBetweenEqualCharacters(string s) {
+        std::unordered_map<char, int> charmap;
+        int maxDiff = 0;
+
+        for (unsigned index = 0; index < s.length(); ++index) {
+            char c = s[index];
+
+            std::unordered_map<char, int>::iterator it = charmap.find(c);
+            if (it != charmap.end()) {
+                int diff = index - it->second;
+                if(maxDiff < diff)
+                    maxDiff = diff;
+                continue;
+                
+            }
+            charmap[c] = index;
+        }
+        return maxDiff - 1;
+    }
+};
