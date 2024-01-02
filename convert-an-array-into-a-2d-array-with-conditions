@@ -1,0 +1,38 @@
+#include <vector>
+#include <map>
+
+class Solution {
+public:
+    // Function to find a matrix based on a given vector of integers
+    std::vector<std::vector<int>> findMatrix(std::vector<int>& nums) {
+        // Map to store the frequency of each element in the vector
+        std::map<int, int> frequencyMap;
+        int n = nums.size();
+        
+        // Variable to store the maximum frequency
+        int maxFrequency = 0;
+
+        // Iterate through the vector to calculate the frequency of each element
+        for (int num : nums) {
+            frequencyMap[num]++;
+            maxFrequency = std::max(maxFrequency, frequencyMap[num]);
+        }
+
+        // Vector to store the resulting matrix
+        std::vector<std::vector<int>> resultMatrix(maxFrequency);
+
+        // Iterate through the frequency map to construct the matrix
+        for (auto entry : frequencyMap) {
+            int num = entry.first;
+            int frequency = entry.second;
+
+            // Place the current number in the matrix based on its frequency
+            for (int i = 0; i < frequency; i++) {
+                resultMatrix[i].push_back(num);
+            }
+        }
+
+        // Return the resulting matrix
+        return resultMatrix;
+    }
+};
