@@ -1,0 +1,31 @@
+#include <vector>
+#include <string>
+#include <algorithm>
+
+class Solution {
+public:
+    int numberOfBeams(std::vector<std::string>& bank) {
+        // If there is only one element in the bank, no beams can be formed
+        if (bank.size() == 1)
+            return 0;
+
+        int total_beams = 0, previous_count = 0;
+        
+        for (int i = 0; i < bank.size() - 1; ++i) {
+            int current_count = 0;
+
+            // Count the number of '1's in the current and next elements
+            if (std::count(bank[i].begin(), bank[i].end(), '1')) {
+                previous_count = std::count(bank[i].begin(), bank[i].end(), '1');
+            }
+
+            if (std::count(bank[i + 1].begin(), bank[i + 1].end(), '1')) {
+                current_count = std::count(bank[i + 1].begin(), bank[i + 1].end(), '1');
+            }
+
+            // Calculate and accumulate the number of beams formed
+            total_beams += previous_count * current_count;
+        }
+        return total_beams;
+    }
+};
