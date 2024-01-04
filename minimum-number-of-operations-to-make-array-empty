@@ -1,0 +1,31 @@
+#include <vector>
+#include <map>
+
+class Solution {
+public:
+    int minOperations(std::vector<int>& nums) {
+        std::map<int, int> frequency;
+
+        // Count the frequency of each element in the input vector
+        for (auto num : nums) {
+            frequency[num]++;
+        }
+
+        int operationsCount = 0;
+
+        // Iterate through the frequency map
+        for (auto it = frequency.begin(); it != frequency.end(); it++) {
+            // If any element appears only once, it's not possible to perform operations
+            if ((it->second) == 1) {
+                return -1;
+            }
+
+            // Calculate the number of operations required for each element
+            operationsCount += (it->second) / 3;
+            operationsCount += (it->second) % 3 > 0 ? 1 : 0;
+        }
+
+        return operationsCount;
+    }
+};
+
