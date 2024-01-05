@@ -1,0 +1,27 @@
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        vector<int> temp;
+        temp.push_back(nums[0]);
+        int length = 1; // Initialize the length to 1 since nums[0] is already included
+
+        // Logic: Maintain a temporary array 'temp' to track increasing subsequence length
+        // 'temp' does not store the actual subsequence but aids in determining its length
+
+        for(int i = 1; i < nums.size(); i++) {
+            // If nums[i] is greater than the last element in 'temp,' add it at the end
+            if(temp.back() < nums[i]) {
+                temp.push_back(nums[i]);
+                length++;
+            }
+            // If not, replace the smallest element greater than nums[i] with nums[i]
+            else {
+                int index = lower_bound(temp.begin(), temp.end(), nums[i]) - temp.begin();
+                temp[index] = nums[i];
+            }
+        }
+
+        return length; // Return the length of the longest increasing subsequence
+    }
+};
