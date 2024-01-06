@@ -1,0 +1,38 @@
+#include <vector>
+#include <algorithm>
+
+class Solution {
+public:
+    int calculateProfit(int index, const std::vector<std::vector<int>>& jobs, const std::vector<int>& startTime, std::vector<int>& dp) {
+        if (index >= startTime.size()) {
+            return 0;
+        }
+
+        if (dp[index] != -1) {
+            return dp[index];
+        }
+
+        int nextIndex = std::lower_bound(startTime.begin(), startTime.end(), jobs[index][1]) - startTime.begin();
+
+        int take = jobs[index][2] + calculateProfit(nextIndex, jobs, startTime, dp);
+        int notTake = calculateProfit(index + 1, jobs, startTime, dp);
+
+        return dp[index] = std::max(take, notTake);
+    }
+
+    int jobScheduling(std::vector<int>& startTime, std::vector<int>& endTime, std::vector<int>& profit) {
+        int n = startTime.size();
+        std::vector<std::vector<int>> jobs;
+
+        std::vector<int> dp(n, -1);
+
+        for (int i = 0; i < n; i++) {
+            jobs.push_back({startTime[i], endTime[i], profit[i]});
+        }
+
+        std::sort(jobs.begin(), jobs.end());
+        std::sort(startTime.begin(), startTime.end());
+
+        return calculateProfit(0, jobs, startTime, dp);
+    }
+};
