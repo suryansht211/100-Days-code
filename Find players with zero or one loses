@@ -1,0 +1,39 @@
+#include <vector>
+#include <set>
+#include <map>
+
+class Solution {
+public:
+    std::vector<std::vector<int>> findWinners(std::vector<std::vector<int>>& matrix) {
+        std::vector<std::vector<int>> result;
+        std::vector<int> uniqueFirstElements, uniqueSecondElements;
+        std::set<int> allElements, secondPositionElements;
+        std::map<int, int> secondPositionCount;
+
+        // Iterate through each inner vector in the matrix
+        for (std::vector<int> innerVector : matrix) {
+            // Add all elements to the set of all elements
+            allElements.insert(innerVector[0]);
+            allElements.insert(innerVector[1]);
+
+            // Add second position elements to the set and update the count
+            secondPositionElements.insert(innerVector[1]);
+            secondPositionCount[innerVector[1]]++;
+        }
+
+        // Find elements that occur only in the first position
+        std::set_difference(allElements.begin(), allElements.end(),
+                            secondPositionElements.begin(), secondPositionElements.end(),
+                            std::inserter(uniqueFirstElements, uniqueFirstElements.end()));
+        result.push_back(uniqueFirstElements);
+
+        // Find elements in the second position that occur only once
+        for (auto it = secondPositionCount.begin(); it != secondPositionCount.end(); ++it) {
+            if (it->second == 1)
+                uniqueSecondElements.push_back(it->first);
+        }
+        result.push_back(uniqueSecondElements);
+
+        return result;
+    }
+};
